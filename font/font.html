@@ -1,0 +1,118 @@
+<html>
+<head>
+    <title>Fonts</title>
+    <!-- <link rel="stylesheet" type="text/css" href="./font.css"> -->
+    <link href="https://fonts.googleapis.com/css?family=Old+Standard+TT|Merriweather|Open+Sans|Lato|Roboto|Pacifico|Tangerine|Waiting+for+the+Sunrise|Inconsolata|Lobster|Monoton" rel="stylesheet" type="text/css" />
+
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #text {
+            margin: 0 auto;
+            padding-top: 150px;
+            font-size: 5em;
+            text-align: center;
+        }
+
+        #options {
+            margin: 50px 200px;
+            line-height: 20px;
+        }
+
+    </style>
+    <script src="https://cdn.firebase.com/js/client/2.3.1/firebase.js"></script>
+</head>
+<body>
+    <div id="text">Hello World</div>
+
+    <div id="options"></div>
+
+
+    <script type="text/javascript">
+        var fonts = [
+          'Old Standard TT',
+          'Merriweather',
+          'Open Sans',
+          'Lato',
+          'Roboto',
+          'Pacifico',
+          'Tangerine',
+          'Waiting for the Sunrise',
+          'Inconsolata',
+          'Lobster',
+          'Monoton'
+        ];
+
+        var styles = {
+            'Old Standard TT' : 'serif',
+            'Merriweather' : 'serif',
+            'Open Sans' : 'san serif',
+            'Lato' : 'san serif',
+            'Roboto' : 'san serif',
+            'Pacifico' : 'cursive',
+            'Tangerine' : 'cursive',
+            'Waiting for the Sunrise' : 'cursive',
+            'Inconsolata' : '',
+            'Lobster' : 'cursive',
+            'Monoton' : 'cursive'
+        }
+
+        var sentiments = [
+          'pretty',
+          'romantic',
+          'clear',
+          'natural',
+          'casual',
+          'elegant',
+          'cool casual',
+          'chic',
+          'modern',
+          'dandy',
+          'classic',
+          'dynamic',
+          'gorgeous'
+        ];
+
+        var myFirebaseRef = new Firebase("https://semantics.firebaseio.com/");
+        var fontConditionNode = myFirebaseRef.child("font-condition");
+
+        var updateCondition = function(font) {
+            var elem = document.getElementById("text");
+            var val = font + ", " + styles[font];
+            elem.style.fontFamily = val;
+            // console.log("updated tyle to font " + val);
+        };
+
+        var fontIndex = 0;
+
+        fontConditionNode.once("value", function(snapshot) {
+            fontIndex = parseInt(snapshot.val());
+            var fontVal = fonts[fontIndex % fonts.length];
+            updateCondition(fontVal, 0);
+
+            fontConditionNode.set(fontIndex + 1, function(error){
+              // console.log("Error value: " + error); 
+            });
+
+        });
+
+        var createCheckboxes = function() {
+            var makeCheckbox = function(type) {
+                return "<label><input name='Q1Answer' type='checkbox' value='" + type + "' /> " + type + "</label><br />";
+            }
+
+            var elem = document.getElementById('options');
+
+            for(var i = 0; i < sentiments.length; i++) {
+                elem.innerHTML += makeCheckbox(sentiments[i]);
+            }
+        }
+
+        createCheckboxes();
+
+    </script>
+</body>
+</html>
