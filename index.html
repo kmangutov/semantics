@@ -8,28 +8,93 @@
 <link href="https://fonts.googleapis.com/css?family=Old+Standard+TT|Tangerine" rel="stylesheet" type="text/css" />
 
 <script src="https://cdn.firebase.com/js/client/2.3.1/firebase.js"></script>
+
+
+<style type="text/css">#tag { 
+  width: 200px;
+  height: 200px;
+  background-color: #FFF;
+  margin: 40px;
+}
+
+#root {
+  margin: 40px;
+}
+</style>
+
+<input type="hidden" id="hiddenCondition" name="ColorCondition">
+
+<div id="tag">&nbsp;
+</div>
+
+<div id="root">
+<h3>1. Please describe the design</h3>
+</div>
+
+
+
 <script>
 
 var colors = [
   '3b5998',
   '00aced',
   'dd4b39',
-  'bb0000'
+  'bb0000',
+  '007bb5',
+  '125688',
+  '4dc247',
+  'cb2027',
+  '00bf8f',
+  'fffc00',
+  'a82400',
+  '007ee5',
+  'ff0084',
+  '32506d',
+  '45668e',
+  'aad450',
+  '0072b1'
 ]; 
 
-/*var fonts = [
-  'Old Standard TT',
-  ''
-];*/
+var sentiments = [
+  'pretty',
+  'romantic',
+  'clear',
+  'natural',
+  'casual',
+  'elegant',
+  'cool casual',
+  'chic',
+  'modern',
+  'dandy',
+  'classic',
+  'dynamic',
+  'gorgeous'
+];
+
 
 var myFirebaseRef = new Firebase("https://semantics.firebaseio.com/");
 var colorConditionNode = myFirebaseRef.child("color-condition");
 
 var updateCondition = function(color, font) {
   var elem = document.getElementById("tag");
-  elem.style.color = color;
-  console.log("updated tyle to color " + color);
+  var hidden = document.getElementById("hiddenCondition");
+
+  elem.style.backgroundColor = color;
+  hidden.value = color;
 };
+
+var createCheckboxes = function() {
+  var makeCheckbox = function(type) {
+    return "<label><input name='Q1Answer' type='checkbox' value='" + type + "' />" + type + "</label><br />";
+  }
+
+  var elem = document.getElementById('root');
+
+  for(var i in sentiments) {
+    elem.innerHTML += makeCheckbox(sentiments[i]);
+  }
+}
+createCheckboxes();
 
 var colorIndex = 0;
 
@@ -47,8 +112,7 @@ colorConditionNode.once("value", function(snapshot) {
 
 </script>
 
-<style type="text/css">#tag { font-family: Tangerine, cursive; }
-</style>
-<h1 id="tag">Mango Plate</h1>
+
+
 
 </html>
