@@ -1,0 +1,54 @@
+
+<html>
+<head>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="utf-8" http-equiv="encoding">
+</head>
+
+<link href="https://fonts.googleapis.com/css?family=Old+Standard+TT|Tangerine" rel="stylesheet" type="text/css" />
+
+<script src="https://cdn.firebase.com/js/client/2.3.1/firebase.js"></script>
+<script>
+
+var colors = [
+  '3b5998',
+  '00aced',
+  'dd4b39',
+  'bb0000'
+]; 
+
+/*var fonts = [
+  'Old Standard TT',
+  ''
+];*/
+
+var myFirebaseRef = new Firebase("https://semantics.firebaseio.com/");
+var colorConditionNode = myFirebaseRef.child("color-condition");
+
+var updateCondition = function(color, font) {
+  var elem = document.getElementById("tag");
+  elem.style.color = color;
+  console.log("updated tyle to color " + color);
+};
+
+var colorIndex = 0;
+
+colorConditionNode.once("value", function(snapshot) {
+    colorIndex = parseInt(snapshot.val());
+    var colorHexString = '#' + colors[colorIndex % colors.length];
+    updateCondition(colorHexString, 0);
+
+    colorConditionNode.set(colorIndex + 1, function(error){
+      console.log("Error value: " + error); 
+    });
+
+});
+
+
+</script>
+
+<style type="text/css">#tag { font-family: Tangerine, cursive; }
+</style>
+<h1 id="tag">Mango Plate</h1>
+
+</html>
