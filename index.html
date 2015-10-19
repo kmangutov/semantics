@@ -84,8 +84,9 @@ var updateCondition = function(color, font) {
 };
 
 var createCheckboxes = function() {
+  var counter = 0;
   var makeCheckbox = function(type) {
-    return "<label><input name='Q1Answer' type='checkbox' value='" + type + "' />" + type + "</label><br />";
+    return "<label><input name='" + type + "' type='checkbox' value='1' />" + type + "</label><br />";
   }
 
   var elem = document.getElementById('root');
