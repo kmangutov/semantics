@@ -86,7 +86,8 @@ var updateCondition = function(color, font) {
 var createCheckboxes = function() {
   var counter = 0;
   var makeCheckbox = function(type) {
-    return "<label><input name='" + type + "' type='checkbox' value='1' />" + type + "</label><br />";
+    var strHidden = "<input type='hidden' value='0' name='" + type + "'>";
+    return strHidden + "<label><input name='" + type + "' type='checkbox' value='1' />" + type + "</label><br />";
   }
 
   var elem = document.getElementById('root');

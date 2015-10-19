@@ -100,9 +100,10 @@
         });
 
         var createCheckboxes = function() {
-            var makeCheckbox = function(type) {
-                return "<label><input name='Q1Answer' type='checkbox' value='" + type + "' /> " + type + "</label><br />";
-            }
+             var makeCheckbox = function(type) {
+                var strHidden = "<input type='hidden' value='0' name='" + type + "'>";
+                return strHidden + "<label><input name='" + type + "' type='checkbox' value='1' />" + type + "</label><br />";
+              }
 
             var elem = document.getElementById('options');
 
