@@ -1,0 +1,190 @@
+<!-- Bootstrap v3.0.3 -->
+<link href="https://s3.amazonaws.com/mturk-public/bs30/css/bootstrap.min.css" rel="stylesheet" />
+<section class="container" id="Other" style="margin-bottom:15px; padding: 10px 10px; font-family: Verdana, Geneva, sans-serif; color:#333333; font-size:0.9em;">
+<div class="row col-xs-12 col-md-12"><!-- Instructions -->
+<div class="panel panel-primary">
+<div class="panel-heading"><strong>Instructions</strong></div>
+
+<div class="panel-body">
+<p>Poster design feedback</p>
+
+<ul>
+  <li>Familiarize yourself with the poster design</li>
+  <li>Provide feedback</li>
+</ul>
+</div>
+</div>
+
+<p>&nbsp;</p>
+</div>
+</section>
+<title></title>
+<!-- <link rel="stylesheet" type="text/css" href="./font.css"> -->
+<link href="https://fonts.googleapis.com/css?family=Old+Standard+TT|Merriweather|Open+Sans|Lato|Roboto|Pacifico|Tangerine|Waiting+for+the+Sunrise|Inconsolata|Lobster|Monoton" rel="stylesheet" type="text/css" />
+<style type="text/css">* {
+            margin: 0;
+            padding: 0;
+        }
+
+        #text {
+            margin: 0 auto;
+            padding-top: 150px;
+            font-size: 5em;
+            text-align: center;
+        }
+
+        #options {
+            margin: 50px 200px;
+            line-height: 20px;
+        }
+</style>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+<meta content="utf-8" http-equiv="encoding" />
+<link href="https://fonts.googleapis.com/css?family=Old+Standard+TT|Tangerine" rel="stylesheet" type="text/css" /><script src="https://cdn.firebase.com/js/client/2.3.1/firebase.js"></script>
+<style type="text/css">#tag { 
+  width: 200px;
+  height: 200px;
+  background-color: #FFF;
+  margin: 40px;
+}
+
+#root {
+  margin: 40px;
+}
+</style>
+<p><input id="hiddenColor" name="ColorCondition" type="hidden" /><input id="hiddenFont" name="FontCondition" type="hidden" /></p>
+
+<!--<div id="tag">&nbsp;</div>-->
+<div id="text">Hello World</div>
+
+<div id="root">
+<h3>1. Please describe the design</h3>
+</div>
+
+<p><script>
+
+var colors = [
+  '3b5998',
+  '00aced',
+  'dd4b39',
+  'bb0000',
+  '007bb5',
+  '125688',
+  '4dc247',
+  'cb2027',
+  '00bf8f',
+  'fffc00',
+  'a82400',
+  '007ee5',
+  'ff0084',
+  '32506d',
+  '45668e',
+  'aad450',
+  '0072b1'
+]; 
+
+var fonts = [
+  'Old Standard TT',
+  'Merriweather',
+  'Open Sans',
+  'Lato',
+  'Roboto',
+  'Pacifico',
+  'Tangerine',
+  'Waiting for the Sunrise',
+  'Inconsolata',
+  'Lobster',
+  'Monoton'
+];
+
+var styles = {
+  'Old Standard TT' : 'serif',
+  'Merriweather' : 'serif',
+  'Open Sans' : 'san serif',
+  'Lato' : 'san serif',
+  'Roboto' : 'san serif',
+  'Pacifico' : 'cursive',
+  'Tangerine' : 'cursive',
+  'Waiting for the Sunrise' : 'cursive',
+  'Inconsolata' : '',
+  'Lobster' : 'cursive',
+  'Monoton' : 'cursive'
+};
+
+var sentiments = [
+  'pretty',
+  'romantic',
+  'clear',
+  'natural',
+  'casual',
+  'elegant',
+  'cool casual',
+  'chic',
+  'modern',
+  'dandy',
+  'classic',
+  'dynamic',
+  'gorgeous'
+];
+
+
+var myFirebaseRef = new Firebase("https://semantics.firebaseio.com/");
+var colorConditionNode = myFirebaseRef.child("color-condition");
+var fontConditionNode = myFirebaseRef.child("font-condition");
+
+var updateCondition = function(color, font) {
+  var elem = document.getElementById("text");
+
+  var hiddenColor = document.getElementById("hiddenColor");
+  var hiddenFont = document.getElementById("hiddenFont");
+
+  var fontVal = font + ", " + styles[font];
+  elem.style.fontFamily = fontVal;
+  elem.style.color = color;//backgroundColor = color;
+  hiddenColor.value = color;
+  hiddenFont.value = fontVal;
+};
+
+var createCheckboxes = function() {
+  var counter = 0;
+  var makeCheckbox = function(type) {
+    var strHidden = "<input type='hidden' value='0' name='" + type + "'>";
+    return strHidden + "<label><input name='" + type + "' type='checkbox' value='1' />" + type + "</label><br />";
+  }
+
+  var elem = document.getElementById('root');
+
+  for(var i in sentiments) {
+    elem.innerHTML += makeCheckbox(sentiments[i]);
+  }
+}
+createCheckboxes();
+
+
+colorConditionNode.once("value", function(snapshot_color) {
+    fontConditionNode.once("value", function(snapshot_font) {
+
+      colorIndex = parseInt(snapshot_color.val());
+      fontIndex = parseInt(snapshot_font.val());
+
+      var colorHexString = '#' + colors[colorIndex % colors.length];
+      var fontString = fonts[fontIndex % fonts.length];
+
+      updateCondition(colorHexString, fontString);
+
+
+      colorConditionNode.set(colorIndex + 1, function(error){
+        console.log("colorConditionNode.set Error value: " + error); 
+      });
+
+      if(colorIndex % colors.length == 0) {
+        fontConditionNode.set(fontIndex + 1, function(error) {
+          console.log("fondConditionNode.set error " + error);
+        });
+      }
+
+    })    
+});
+
+
+</script></p>

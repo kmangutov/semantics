@@ -28,6 +28,9 @@
 <body>
     <div id="text">Hello World</div>
 
+    <br><br><h3>1. Please describe the design</h3>
+
+
     <div id="options"></div>
 
 
@@ -101,8 +104,8 @@
 
         var createCheckboxes = function() {
              var makeCheckbox = function(type) {
-                var strHidden = "<input type='hidden' value='0' name='" + type + "'>";
-                return strHidden + "<label><input name='" + type + "' type='checkbox' value='1' />" + type + "</label><br />";
+                
+                return "<label><input name='" + type + "' type='checkbox' value='1' />" + type + "</label><br />";
               }
 
             var elem = document.getElementById('options');
